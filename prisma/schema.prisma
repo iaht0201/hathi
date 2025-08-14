@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model category {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String
+  slug       String    @unique
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @default(now()) @db.Timestamptz(6)
+  images     String?
+  product    product[]
+}
+
+model product {
+  id                String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String
+  slug              String         @unique
+  description       String?
+  how_to_use        String?
+  ingredients       String?
+  form              cosmetic_form  @default(OTHER)
+  target_skin       skin_type      @default(ALL)
+  country_of_origin String?
+  images            String[]       @default([])
+  category_id       String         @db.Uuid
+  is_active         Boolean        @default(true)
+  created_at        DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime       @default(now()) @db.Timestamptz(6)
+  price             Float          @default(0)
+  discount          Float          @default(0)
+  types             product_type[] @default([])
+  brand_id          String         @db.Uuid
+  brand             brand          @relation(fields: [brand_id], references: [id], onDelete: NoAction, map: "fk_product_brand")
+  category          category       @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_category")
+
+  @@index([category_id], map: "idx_product_category_id")
+  @@index([is_active], map: "idx_product_is_active")
+  @@index([brand_id], map: "idx_product_brand_id")
+}
+
+model todo {
+  id    Int     @id @default(autoincrement())
+  title String
+  done  Boolean @default(false)
+}
+
+model brand {
+  id      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name    String
+  slug    String    @unique
+  product product[]
+}
+
+enum cosmetic_form {
+  CREAM
+  SERUM
+  GEL
+  LOTION
+  TONER
+  CLEANSER
+  MASK
+  SUNSCREEN
+  MAKEUP
+  OIL
+  BALM
+  OTHER
+}
+
+enum skin_type {
+  ALL
+  OILY
+  DRY
+  COMBINATION
+  SENSITIVE
+}
+
+enum product_type {
+  BESTSELLER
+  PARTNER
+  NEW
+}
