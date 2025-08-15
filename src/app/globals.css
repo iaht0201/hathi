@@ -44,7 +44,7 @@
 }
 
 :root {
-  --primary: oklch(0.83 0.06 7.08); /* #f4a4bc */
+  --primary: oklch(83.05% 0.05975 7.842); /* #f4a4bc */
   --primary-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.83 0.06 7.08); /* đồng bộ sidebar */
   --sidebar-primary-foreground: oklch(0.145 0 0);
@@ -129,4 +129,28 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+
+/* Firefox */
+.thumbs-rail {
+  scrollbar-width: thin;
+  scrollbar-color: #ebb8c0 #fde7f3;
+}
+
+/* Chrome, Edge, Safari (WebKit) */
+.thumbs-rail::-webkit-scrollbar {
+  width: 8px;
+}
+.thumbs-rail::-webkit-scrollbar-track {
+  background: #ebb8c0;    
+  border-radius: 9999px;
+}
+.thumbs-rail::-webkit-scrollbar-thumb {
+  background: #ebb8c0;    
+  border-radius: 9999px;
+  border: 2px solid #fde7f3; 
+}
+.thumbs-rail::-webkit-scrollbar-thumb:hover {
+  background: #ebb8c0;      
 }

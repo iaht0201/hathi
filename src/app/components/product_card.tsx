@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ProductWithCategory } from "@/types/product";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 
 export function ProductCard({ item }: { item: ProductWithCategory }) {
   const href = `/products/${item.slug}`; // hoặc `/products/${item.id}`
@@ -16,10 +17,13 @@ export function ProductCard({ item }: { item: ProductWithCategory }) {
         </Badge>
 
         <Link href={href} scroll={false} className="block h-full">
-          <img
-            src={item.images?.[0] ?? "/placeholder.png"}
+          <Image
+            src={item.images?.[0] ?? "/images/placeholder.png"}
             alt={item.name}
+            width={500}
+            height={500}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            style={{ objectFit: "cover" }}
           />
         </Link>
 

@@ -31,11 +31,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
         nameProduct={product.name}
         nameCategory={product.category?.name}
       />
-      <ContentProduct
-        images={product.images}
-        name={product.name}
-        discountPercent={product.discount}
-      />
+      <ContentProduct product={product} />
     </div>
   );
 };
