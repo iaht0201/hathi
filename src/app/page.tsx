@@ -21,13 +21,13 @@ import { SliderHomePage } from "@/app/components/slide";
 import { FutureCustom } from "@/app/components/future";
 import { ProductCard } from "./components/product_card";
 import CategoryCardCustom from "./components/category";
-import { Category, ProductWithCategory } from "@/types/product";
-import { getHomeProducts } from "./api/products/route";
+import { Brand, Category, ProductWithCategory } from "@/types/product";
+import { fetchMoreBrandBySlug } from "./api/brand/services";
 
 export default async function LoobekLikeCosmetics() {
-  const data = await getHomeProducts(5);
-  const sections = data.sections;
-  console.log("Fetched products:", data);
+  const datas =
+    (await fetchMoreBrandBySlug(["hathi", "khac", "ainhoa", "decaar"])) ?? null;
+  console.log("Fetched products:", datas);
 
   const { categories } = await fetch("http://localhost:3000/api/category", {
     cache: "no-store",
@@ -41,16 +41,16 @@ export default async function LoobekLikeCosmetics() {
       {/* <HeaderCustom /> */}
       <SliderHomePage />
       <FutureCustom />
-      {sections.map((section) => (
-        <section className="mx-auto max-w-7xl px-4 py-8" key={section.type}>
+      {datas.map((data: Brand) => (
+        <section className="mx-auto max-w-7xl px-4 py-8" key={data.id}>
           <div className="mb-6 flex items-end justify-between">
-            <h3 className="text-xl md:text-2xl font-bold">{section.title}</h3>
+            <h3 className="text-xl md:text-2xl font-bold">{data.name}</h3>
             <div className="text-sm text-muted-foreground">
-              {section.products.length} sản phẩm
+              {data.product.length} sản phẩm
             </div>
           </div>
           <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {section.products.map((item: ProductWithCategory) => (
+            {(data.product as ProductWithCategory[]).map((item) => (
               <ProductCard key={item.id} item={item} />
             ))}
           </div>
