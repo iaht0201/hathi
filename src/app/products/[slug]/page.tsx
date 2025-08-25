@@ -6,7 +6,7 @@ import { BreadCrumb } from "./components/breadcrumb";
 import { ContentProduct } from "./components/content";
 
 interface ProductPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 async function getProductBySlug(
@@ -19,7 +19,8 @@ async function getProductBySlug(
 }
 
 const ProductPage = async ({ params }: ProductPageProps) => {
-  const product = await getProductBySlug(params.slug);
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();

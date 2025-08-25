@@ -3,16 +3,15 @@ import { prisma } from "@/lib/prisma";
 import { cosmetic_form, skin_type } from "@prisma/client";
 
 export async function PUT(
-  req: Request,
-  ctx: { params: Record<string, string | string[]> }
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const raw = ctx?.params?.id;
-  const id = Array.isArray(raw) ? raw[0] : raw;
+  const { id } = await params;
 
   try {
     const body = await req.json();
-
     const data: Record<string, unknown> = {};
+
     if (body.name !== undefined) data.name = String(body.name);
     if (body.slug !== undefined) data.slug = String(body.slug);
     if (body.description !== undefined)
@@ -32,9 +31,8 @@ export async function PUT(
       if (t !== undefined) data.target_skin = t;
     }
 
-    if (body.country_of_origin !== undefined) {
+    if (body.country_of_origin !== undefined)
       data.country_of_origin = body.country_of_origin ?? null;
-    }
 
     if (body.images !== undefined) {
       data.images = Array.isArray(body.images)
@@ -62,9 +60,10 @@ export async function PUT(
 
 export async function DELETE(
   _req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const id = params.id;
+  const { id } = await params;
+
   try {
     await prisma.product.delete({ where: { id } });
     return NextResponse.json({ ok: true });

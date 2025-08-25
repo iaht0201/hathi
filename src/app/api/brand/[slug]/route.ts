@@ -4,9 +4,10 @@ import { NextResponse } from "next/dist/server/web/spec-extension/response";
 // / GET /api/products/:id
 export async function GET(
   req: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const { slug } = await params;
     const url = new URL(req.url);
 
     const take = Math.min(
@@ -20,7 +21,7 @@ export async function GET(
       | "desc";
 
     const brand = await prisma.brand.findUnique({
-      where: { slug: params.slug },
+      where: { slug: slug },
       include: {
         _count: { select: { product: true } },
         product: {

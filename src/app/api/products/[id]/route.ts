@@ -9,11 +9,12 @@ export const dynamic = "force-dynamic";
 // GET /api/products/:id
 export async function GET(
   _req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const product = await prisma.product.findUnique({
-      where: { id: params.id }, // nếu id là Int thì parse Number(params.id)
+      where: { id: id }, // nếu id là Int thì parse Number(params.id)
       include: { category: true },
     });
     if (!product)
@@ -32,11 +33,11 @@ export async function GET(
 // PATCH /api/products/:id
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const body = await req.json();
-
+    const { id } = await params;
     // map tên client -> đúng cách update Prisma
     const categoryId = body.categoryId ?? body.category_id;
 
@@ -58,7 +59,7 @@ export async function PATCH(
     };
 
     const updated: ProductWithCategory = await prisma.product.update({
-      where: { id: params.id },
+      where: { id: id },
       data,
       include: { category: true },
     });
@@ -77,10 +78,11 @@ export async function PATCH(
 // DELETE /api/products/:id
 export async function DELETE(
   _req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await prisma.product.delete({ where: { id: params.id } });
+    const { id } = await params;
+    await prisma.product.delete({ where: { id } });
     return new NextResponse(null, { status: 204 });
   } catch (e: unknown) {
     if (e instanceof Error) {
