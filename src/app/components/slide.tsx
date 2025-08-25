@@ -102,7 +102,7 @@ export const SliderHomePage = () => {
       <div className="container w-full  mx-auto px-2 my-2">
         <div className="relative overflow-hidden rounded-3xl">
           <div
-            className="relative h-[40vh] min-h-[320px] sm:h-[45vh] md:h-[65vh] lg:h-[75vh]"
+            className="relative aspect-[16/9] w-full"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
             onTouchStart={onTouchStart}

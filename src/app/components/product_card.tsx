@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { ShoppingBag, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -5,12 +6,47 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ProductWithCategory } from "@/types/product";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import { useState } from "react";
+import { storageHelper } from "@/lib/utils/storageHelper";
+type CartItem = {
+  productId: string;
+  name: string;
+  price: number;
+  image: string;
+  qty: number;
+};
 
 export function ProductCard({ item }: { item: ProductWithCategory }) {
-  const href = `/products/${item.slug}`; // hoặc `/products/${item.id}`
+  const href = `/products/${item.slug}`;
+  const [added, setAdded] = useState(false);
+
+  const handleAddToCart = () => {
+    try {
+      const productId = item.id;
+      const cartItem: CartItem = {
+        productId,
+        name: item.name,
+        price: item?.price ?? 0,
+        image: item.images[0] ?? "/images/placeholder.png",
+        qty: 1,
+      };
+
+      storageHelper.push<CartItem>("cart", cartItem);
+
+      alert(`Đã thêm ${item.name} số lượng 1 vào giỏ hàng`);
+
+      setAdded(true);
+      setTimeout(() => setAdded(false), 1800);
+
+      console.log("Cart hiện tại:", storageHelper.get<CartItem[]>("cart"));
+    } catch (e) {
+      console.error(e);
+      alert("Không thể thêm vào giỏ. Vui lòng thử lại.");
+    }
+  };
 
   return (
-    <Card className="group overflow-hidden rounded-2xl border-0 shadow-sm hover:shadow-md transition-shadow">
+    <Card className="group overflow-hidden rounded-2xl border-0 shadow-sm hover:shadow-md transition-shadow pb-1 pt-0">
       <div className="relative aspect-[4/5] overflow-hidden rounded-2xl ">
         <Badge className="absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-xs capitalize text-white bg-primary">
           {item.category.name}
@@ -18,7 +54,7 @@ export function ProductCard({ item }: { item: ProductWithCategory }) {
 
         <Link href={href} scroll={false} className="block h-full">
           <Image
-            src={item.images?.[0] ?? "/images/placeholder.png"}
+            src={item.images[0] ?? "/images/placeholder.png"}
             alt={item.name}
             width={500}
             height={500}
@@ -36,8 +72,13 @@ export function ProductCard({ item }: { item: ProductWithCategory }) {
         </button>
 
         <div className="absolute inset-x-0 bottom-3 flex justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <Button className="rounded-full" size="sm" type="button">
-            <ShoppingBag className="mr-2 h-4 w-4" /> Add to cart
+          <Button
+            className="rounded-full"
+            size="sm"
+            type="button"
+            onClick={handleAddToCart}
+          >
+            <ShoppingBag className="mr-2 h-4 w-4" /> Thêm vào giỏ hàng
           </Button>
         </div>
       </div>

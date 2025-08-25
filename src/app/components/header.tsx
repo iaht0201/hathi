@@ -7,6 +7,7 @@ import { ShoppingBag, Search, Heart, Menu, Sparkles, X } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import Image from "next/image";
+import Link from "next/link";
 
 export const HeaderCustom: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -45,10 +46,46 @@ export const HeaderCustom: React.FC = () => {
       <div className="hidden md:block border-b bg-primary/90 text-white">
         <div className="mx-auto max-w-7xl px-4 py-3 flex items-center gap-6 justify-between">
           <div className="flex items-center gap-2">
-            <span>Xin chào bạn đến với Hathi!</span>
+            <span>
+              Chào bạn đến với Hathi beauty. Nơi nâng niu sắc đẹp Việt!{" "}
+            </span>
           </div>
           <div className="flex items-center gap-4 ">
-            <span>Hỗ trợ</span>
+            <span className="flex items-center gap-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
+                />
+              </svg>
+              0888575541
+            </span>
+
+            <span className="flex items-center gap-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+                />
+              </svg>
+              contact@hathibeauty.com
+            </span>
           </div>
         </div>
       </div>
@@ -80,9 +117,12 @@ export const HeaderCustom: React.FC = () => {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex ml-8 items-center gap-6 text-sm">
-            <a className="hover:text-primary" href="#">
+            <Link href="/" className="hover:text-primary">
               Trang chủ
-            </a>
+            </Link>
+            {/* <a className="hover:text-primary" href="">
+              Trang chủ
+            </a> */}
             <a className="hover:text-primary" href="#">
               Blog
             </a>
@@ -132,10 +172,12 @@ export const HeaderCustom: React.FC = () => {
               className="rounded-xl relative"
               aria-label="Cart"
             >
-              <ShoppingBag className="h-5 w-5" />
-              <span className="absolute -right-1 -top-1 h-5 min-w-5 rounded-full bg-primary text-[10px] leading-5 text-white text-center px-1">
-                3
-              </span>
+              <Link href="/cart">
+                <ShoppingBag className="h-5 w-5" />
+                {/* <span className="absolute -right-1 -top-1 h-5 min-w-5 rounded-full bg-primary text-[10px] leading-5 text-white text-center px-1">
+                  3
+                </span> */}
+              </Link>
             </Button>
           </div>
         </div>
@@ -165,8 +207,13 @@ export const HeaderCustom: React.FC = () => {
             >
               <div className="flex items-center justify-between px-4 py-4 border-b">
                 <div className="text-xl font-bold flex items-center gap-2">
-                  <Sparkles className="h-5 w-5" /> Cometic
-                  <span className="text-primary">.</span>
+                  <Image
+                    src="/images/logo_cover.png"
+                    alt="Logo"
+                    width={128} // tương đương w-32
+                    height={128} // tương đương h-32
+                    className="w-32 h-10 object-cover"
+                  />
                 </div>
                 <Button
                   variant="outline"

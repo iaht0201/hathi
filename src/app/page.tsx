@@ -29,16 +29,18 @@ export default async function LoobekLikeCosmetics() {
     (await fetchMoreBrandBySlug(["hathi", "khac", "ainhoa", "decaar"])) ?? null;
   console.log("Fetched products:", datas);
 
-  const { categories } = await fetch("http://localhost:3000/api/category", {
-    cache: "no-store",
-  }).then((res) => {
+  const { categories } = await fetch(
+    "http://localhost:3000/api/category?take=4&skip=8",
+    {
+      cache: "no-store",
+    }
+  ).then((res) => {
     if (!res.ok) throw new Error("Failed to fetch categories");
     return res.json();
   });
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* <HeaderCustom /> */}
       <SliderHomePage />
       <FutureCustom />
       {datas.map((data: Brand) => (
@@ -49,7 +51,7 @@ export default async function LoobekLikeCosmetics() {
               {data.product.length} sản phẩm
             </div>
           </div>
-          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {(data.product as ProductWithCategory[]).map((item) => (
               <ProductCard key={item.id} item={item} />
             ))}
@@ -74,19 +76,18 @@ export default async function LoobekLikeCosmetics() {
           <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-background/10 to-background/0" />
           <div className="absolute right-8 top-1/2 -translate-y-1/2 max-w-md">
             <p className="text-sm uppercase tracking-widest text-muted-foreground">
-              Limited Time
+              Thời gian có hạn
             </p>
             <h3 className="mt-2 text-3xl md:text-4xl font-extrabold">
-              Buy 2, get 1 free
+              Mua 2 tặng 1
             </h3>
             <p className="mt-2 text-sm md:text-base text-muted-foreground">
-              Mix & match across makeup, skincare and tools. Auto‑applied at
-              checkout.
+              Sản phẩm skincare cao cấp, tự nhiên, an toàn cho làn da.
             </p>
             <div className="mt-5 flex gap-3">
-              <Button className="rounded-full">Shop the offer</Button>
+              <Button className="rounded-full text-white">Mua ngay</Button>
               <Button variant="outline" className="rounded-full">
-                Learn more
+                Tìm hiểu thêm
               </Button>
             </div>
           </div>
@@ -94,7 +95,7 @@ export default async function LoobekLikeCosmetics() {
       </section>
 
       {/* Newsletter */}
-      <section className="border-t">
+      {/* <section className="border-t">
         <div className="mx-auto max-w-7xl px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
             <h4 className="text-2xl font-bold">Get 10% off your first order</h4>
@@ -103,19 +104,19 @@ export default async function LoobekLikeCosmetics() {
               offers.
             </p>
           </div>
-          {/* <form onSubmit={(e) => e.preventDefault()} className="flex gap-2">
+         <form onSubmit={(e) => e.preventDefault()} className="flex gap-2">
             <Input
               type="email"
               placeholder="Enter your email"
               className="rounded-full"
             />
             <Button className="rounded-full">Subscribe</Button>
-          </form> */}
+          </form> 
         </div>
-      </section>
+      </section> */}
 
       {/* Footer */}
-      <footer className="border-t">
+      {/* <footer className="border-t">
         <div className="mx-auto max-w-7xl px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
           <div>
             <div className="text-xl font-black mb-3">
@@ -190,7 +191,7 @@ export default async function LoobekLikeCosmetics() {
             </div>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }
