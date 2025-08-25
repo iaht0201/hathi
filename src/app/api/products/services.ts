@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { Brand, ProductType, ProductWithCategory } from "@/types/product";
 import { fetchBrands } from "../brand/services";
-const BASE = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+// const BASE = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 
 type SingleResp = {
   products: ProductWithCategory[];
@@ -20,7 +20,8 @@ export async function fetchSection(
   const params = new URLSearchParams();
   params.set("take", String(take));
   params.set("brand", buildBrandParam(brand).toString());
-  const url = `${BASE}/api/products?${params.toString()}`;
+  // const url = `${BASE}/api/products?${params.toString()}`;
+  const url = `/api/products?${params.toString()}`;
 
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok)

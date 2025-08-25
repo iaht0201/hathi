@@ -10,12 +10,9 @@ export async function fetchBrands({
   skip = 0,
 }: FetchBrandsParams = {}) {
   const qs = new URLSearchParams({ take: String(take), skip: String(skip) });
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/brands?${qs.toString()}`,
-    {
-      method: "GET",
-    }
-  );
+  const res = await fetch(`/api/brands?${qs.toString()}`, {
+    method: "GET",
+  });
   if (!res.ok) {
     throw new Error(`Fetch brands failed: ${res.status}`);
   }
@@ -33,7 +30,7 @@ export type CreateBrandInput = {
 };
 
 export async function createBrand(input: CreateBrandInput) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/brands`, {
+  const res = await fetch(`/api/brands`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -60,9 +57,7 @@ export async function fetchBrandBySlug(
   if (opts?.order) params.set("order", opts.order);
 
   const query = params.toString();
-  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/brand/${slug}${
-    query ? `?${query}` : ""
-  }`;
+  const url = `/api/brand/${slug}${query ? `?${query}` : ""}`;
 
   const res = await fetch(url, {
     method: "GET",

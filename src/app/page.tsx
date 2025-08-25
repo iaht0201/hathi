@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 import {
   ShoppingBag,
   Search,
@@ -25,21 +24,22 @@ import CategoryCardCustom from "./components/category";
 import { Brand, Category, ProductWithCategory } from "@/types/product";
 import { fetchMoreBrandBySlug } from "./api/brand/services";
 import { env } from "node:process";
+import { listCategories } from "@/lib/data/category";
 
 export default async function LoobekLikeCosmetics() {
   const datas =
     (await fetchMoreBrandBySlug(["hathi", "khac", "ainhoa", "decaar"])) ?? null;
   console.log("Fetched products:", datas);
-
-  const { categories } = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/category?take=4&skip=8`,
-    {
-      cache: "no-store",
-    }
-  ).then((res) => {
-    if (!res.ok) throw new Error("Failed to fetch categories");
-    return res.json();
-  });
+  const { categories } = await listCategories({ take: 4, skip: 8 });
+  // const { categories } = await fetch(
+  //   `${process.env.NEXT_PUBLIC_API_URL}/api/category?take=4&skip=8`,
+  //   {
+  //     cache: "no-store",
+  //   }
+  // ).then((res) => {
+  //   if (!res.ok) throw new Error("Failed to fetch categories");
+  //   return res.json();
+  // });
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -62,8 +62,14 @@ export default async function LoobekLikeCosmetics() {
       ))}
 
       <div className="grid grid-cols-1 mx-6 md:grid-cols-2 lg:grid-cols-4 gap-6 my-8">
-        {categories.map((cat: Category) => (
-          <CategoryCardCustom key={cat.id} cat={cat} />
+        {categories.map((cat) => (
+          <CategoryCardCustom
+            key={cat.id}
+            cat={{
+              ...cat,
+              product: [],
+            }}
+          />
         ))}
       </div>
 
