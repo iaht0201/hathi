@@ -23,6 +23,7 @@ import { ProductCard } from "./components/product_card";
 import CategoryCardCustom from "./components/category";
 import { Brand, Category, ProductWithCategory } from "@/types/product";
 import { fetchMoreBrandBySlug } from "./api/brand/services";
+import { env } from "node:process";
 
 export default async function LoobekLikeCosmetics() {
   const datas =
@@ -30,7 +31,7 @@ export default async function LoobekLikeCosmetics() {
   console.log("Fetched products:", datas);
 
   const { categories } = await fetch(
-    "http://localhost:3000/api/category?take=4&skip=8",
+    `${process.env.NEXT_PUBLIC_API_URL}/api/category?take=4&skip=8`,
     {
       cache: "no-store",
     }
