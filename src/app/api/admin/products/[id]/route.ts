@@ -3,16 +3,16 @@ import { prisma } from "@/lib/prisma";
 import { cosmetic_form, skin_type } from "@prisma/client";
 
 export async function PUT(
-  req: NextRequest,
-  context: { params: { id: string } }
+  req: Request,
+  ctx: { params: Record<string, string | string[]> }
 ) {
-  const { id } = context.params;
+  const raw = ctx?.params?.id;
+  const id = Array.isArray(raw) ? raw[0] : raw;
 
   try {
     const body = await req.json();
 
     const data: Record<string, unknown> = {};
-
     if (body.name !== undefined) data.name = String(body.name);
     if (body.slug !== undefined) data.slug = String(body.slug);
     if (body.description !== undefined)
@@ -54,7 +54,7 @@ export async function PUT(
 
     const updated = await prisma.product.update({ where: { id }, data });
     return NextResponse.json(updated);
-  } catch (e: unknown) {
+  } catch (e) {
     const msg = e instanceof Error ? e.message : "Unknown error";
     return NextResponse.json({ error: msg }, { status: 500 });
   }
